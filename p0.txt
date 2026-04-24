@@ -1,0 +1,13 @@
+function doGet() {
+  return HtmlService.createTemplateFromFile('Index')
+    .evaluate()
+    .setFaviconUrl('https://s13.gifyu.com/images/bqZPy.png')
+    .setTitle('Portfolio Mr. Arun Wayuphak')
+    .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// ฟังก์ชันสำหรับดึงเนื้อหาจากไฟล์ HTML อื่นๆ ตามชื่อไฟล์
+function loadPartialView(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}

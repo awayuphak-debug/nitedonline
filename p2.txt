@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  
+  <style>
+
+    body { 
+      font-family: 'Kanit', sans-serif; 
+      background-color: #f0f2f5; 
+      margin: 0;
+    }
+
+    .logo-img-container {
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .logo-img {
+      width: 195px;
+      height: 195px;
+      border-radius: 50%;
+      border: 5px solid #007bff;
+      object-fit: cover;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    /* --- Timeline Layout (Single Sided - Left) --- */
+  .main-timeline {
+    position: relative;
+    padding: 20px 0;
+  }
+
+  /* เส้นแนวตั้ง - บังคับให้อยู่ชิดซ้าย (31px จากขอบ) */
+  .main-timeline::after {
+    content: '';
+    position: absolute;
+    width: 6px;
+    background-color: #939597;
+    top: 0;
+    bottom: 0;
+    left: 31px; /* ชิดซ้ายเสมอ */
+    margin-left: -3px;
+  }
+
+  .timeline {
+    position: relative;
+    background-color: inherit;
+    width: 100%;       /* เต็มความกว้าง */
+    padding-left: 70px; /* เว้นพื้นที่ด้านซ้ายให้เส้นและจุด */
+    padding-right: 15px;
+    margin-bottom: 30px;
+  }
+
+  /* จุดกลมบนเส้น Timeline */
+  .timeline::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 25px;
+    left: 18px; /* วางให้ทับบนเส้นพอดี */
+    background-color: #939597;
+    border: 5px solid #f5df4d;
+    top: 15px;
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  /* หัวลูกศรชี้ไปทางซ้าย (เข้าหาเส้น) */
+  .timeline::before {
+    content: " ";
+    position: absolute;
+    top: 18px;
+    z-index: 1;
+    left: 60px; /* วางหน้า Card */
+    border: medium solid white;
+    border-width: 10px 10px 10px 0;
+    border-color: transparent white transparent transparent;
+  }
+
+  /* ยกเลิกการตั้งค่าฝั่งซ้ายเดิม */
+  .left, .right {
+    left: 0 !important;
+  }
+
+  /* ปรับ Card ให้ดูสะอาดตา */
+  .card {
+    padding: 10px 20px;
+    position: relative;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border: none;
+  }
+
+  </style>  
+  </head>
+  <body>
+    
+    <div class="animate__animated animate__fadeIn mb-4">
+      <div class="card shadow-sm border-0 p-4">
+        <h2><i class="bi bi-person-vcard"></i> โปรไฟล์</h2>
+      </div>
+    </div>
+
+    <div class="animate__animated animate__fadeIn">
+      <div class="row">
+        <div class="col-sm-3 mb-4">
+          <div class="card shadow-sm border-0 p-4">
+            <div class="logo-img-container">
+              <img src="https://lh3.googleusercontent.com/d/1wSjS0WIjFs5OGiGBS8Q9TJ0i57lUMPi_" 
+                  class="logo-img animate__animated animate__zoomIn" 
+                  alt="Profile">
+            </div>
+          </div>  
+        </div>
+        <div class="col-sm-9 mb-4"> 
+          <div class="card shadow-sm border-0 p-4">
+            <h5><i class="fa-solid fa-user-tie"></i> ข้อมูลส่วนตัว</h5>
+            <h6><i class="fa-solid fa-angles-right"></i> ชื่อ - นามสกุล : นายอรุณ วายุภักดิ์</h6>
+            <h6><i class="fa-solid fa-angles-right"></i> ชื่อเล่น : เอ็ม</h6>
+            <h6><i class="fa-solid fa-angles-right"></i> เชื่อชาติ : ไทย</h6>
+            <h6><i class="fa-solid fa-angles-right"></i> สัญชาติ : ไทย</h6>
+            <h6><i class="fa-solid fa-angles-right"></i> ศาสนา : อิสลาม</h6>
+            <h6><i class="fa-solid fa-angles-right"></i> ที่อยู่ : 170 ม.11 ต.แม่ขรี อ.ตะโหมด จ.พัทลุง รหัสไปรษณีย์ 93160</h6>
+          </div> 
+        </div>
+      </div>
+    </div>
+
+    <div class="animate__animated animate__fadeIn mb-4">
+      <div class="card shadow-sm border-0 p-4">
+        <h5><i class="fa-solid fa-user-graduate"></i> ประวัติการศึกษา</h5>
+
+        <div class="container py-5">          
+          <div class="main-timeline">
+            <div class="timeline left">
+              <div class="card">
+                <div class="card-body p-4">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-sm-2">
+                          <h5 class="text-center">2566</h5>
+                          <img src="https://lh3.googleusercontent.com/d/1TO3mSSmOeNkWovi5Jqt1zNx-_A2-jI3j" 
+                              width="70px" height="80px"
+                              class="animate__animated animate__zoomIn mx-auto d-block" 
+                              alt="Hu">
+                        </div>
+                        <div class="col-sm-10">
+                          <p class="mb-0"><br>
+                                          <i class="fa-solid fa-angles-right"></i> ศึกษาศาสตรมหาบัณฑิต<br>
+                                          <i class="fa-solid fa-angles-right"></i> สาขาวิชาหลักสูตรและการสอน<br>
+                                          <i class="fa-solid fa-angles-right"></i> คณะศึกษาศาสตร์และศิลปศาสตร์<br>
+                                          <i class="fa-solid fa-angles-right"></i> มหาวิทยาลัยหาดใหญ่ จังหวัดสงขลา
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="timeline right">
+              <div class="card">
+                <div class="card-body p-4">
+                  <div class="container">
+                      <div class="row">
+                        <div class="col-sm-2">
+                          <h5 class="text-center">2553</h5>
+                          <img src="https://lh3.googleusercontent.com/d/1c1lP5a2oSBkSkB8aMUScptwcgVsbDPfi" 
+                              width="70px" height="80px"
+                              class="animate__animated animate__zoomIn mx-auto d-block" 
+                              alt="Hu">
+                        </div>
+                        <div class="col-sm-10">
+                          <p class="mb-0"><br>
+                                          <i class="fa-solid fa-angles-right"></i> วิทยาศาสตรบัณฑิต<br>
+                                          <i class="fa-solid fa-angles-right"></i> สาขาวิชาวิทยาการคอมพิวเตอร์<br>
+                                          <i class="fa-solid fa-angles-right"></i> คณะวิทยาศาสตร์และเทคโนโลยี<br>
+                                          <i class="fa-solid fa-angles-right"></i> มหาวิทยาลัยราชภัฏสงขลา จังหวัดสงขลา
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="timeline left">
+              <div class="card">
+                <div class="card-body p-4">
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <h5 class="text-center">2548</h5>
+                        <img src="https://lh3.googleusercontent.com/d/1cfkPelH75f9JebqvPY9UF5Ej1f1sQiAQ" 
+                            width="70px" height="70px"
+                            class="animate__animated animate__zoomIn mx-auto d-block" 
+                            alt="Hu">
+                      </div>
+                      <div class="col-sm-10">
+                        <p class="mb-0"><br>
+                                        <i class="fa-solid fa-angles-right"></i> มัธยมศึกษาตอนปลาย<br>
+                                        <i class="fa-solid fa-angles-right"></i> แผนการเรียน วิทย์ คณิต คอมพิวเตอร์<br>
+                                        <i class="fa-solid fa-angles-right"></i> โรงเรียนดารุลมาอาเรฟ จังหวัดสตูล
+                        </p>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="timeline right">
+              <div class="card">
+                <div class="card-body p-4">
+                  <div class="row">
+                      <div class="col-sm-2">
+                        <h5 class="text-center">2545</h5>
+                        <img src="https://lh3.googleusercontent.com/d/1VgcB7txblMnZ2ECcOlFl_J1qPsKnuG55" 
+                            width="70px" height="70px"
+                            class="animate__animated animate__zoomIn mx-auto d-block" 
+                            alt="Hu">
+                      </div>
+                      <div class="col-sm-10">
+                        <p class="mb-0"><br>
+                                        <i class="fa-solid fa-angles-right"></i> มัธยมศึกษาตอนต้น<br>
+                                        <i class="fa-solid fa-angles-right"></i> แผนการเรียน คณิต คอมพิวเตอร์<br>
+                                        <i class="fa-solid fa-angles-right"></i> โรงเรียนดารุสสาลาม จังหวัดนราธิวาส
+                        </p>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="timeline left">
+              <div class="card">
+                <div class="card-body p-4">
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <h5 class="text-center">2542</h5>
+                        <img src="https://lh3.googleusercontent.com/d/10JtJSTwO_8HnOzPo9DSNZz5z08IEZfC-" 
+                            width="70px" height="75px"
+                            class="animate__animated animate__zoomIn mx-auto d-block" 
+                            alt="Hu">
+                      </div>
+                      <div class="col-sm-10">
+                        <p class="mb-0"><br>
+                                        <i class="fa-solid fa-angles-right"></i> ประถมศึกษา<br>
+                                        <i class="fa-solid fa-angles-right"></i> โรงเรียนบ้านด่านโลด จังหวัดพัทลุง
+                        </p>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="timeline right">
+              <div class="card">
+                <div class="card-body p-4">
+                  <div class="row">
+                      <div class="col-sm-2">
+                        <h5 class="text-center">2535</h5>
+                        <img src="https://lh3.googleusercontent.com/d/1dI3Od5Q2y_gf5ReiQ_FK3UJ9YOlplSlU" 
+                            width="70px" height="70px"
+                            class="animate__animated animate__zoomIn mx-auto d-block" 
+                            alt="Hu">
+                      </div>
+                      <div class="col-sm-10">
+                        <p class="mb-0"><br>
+                                        <i class="fa-solid fa-angles-right"></i> อนุบาล<br>
+                                        <i class="fa-solid fa-angles-right"></i> โรงเรียนอนุบาลธนะวิทย์ จังหวัดพัทลุง
+                        </p>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="animate__animated animate__fadeIn mb-4">
+      <div class="card shadow-sm border-0 p-4">
+        <h5><i class="fa-solid fa-building-user"></i> ประวัติการทำงาน</h5>
+
+        <div class="container py-5">          
+          <div class="main-timeline">
+            <div class="timeline left">
+              <div class="card">
+                <div class="card-body p-4">
+                    <div class="container">
+                      <div class="row">
+                        <div class="col-sm-2">
+                          <h5 class="text-center">2567</h5>
+                          <img src="https://lh3.googleusercontent.com/d/18PYdqcCCMzJsFxEZ5FJ7_3-uvhAI-inJ" 
+                              width="70px" height="80px"
+                              class="animate__animated animate__zoomIn mx-auto d-block" 
+                              alt="Hu">
+                        </div>
+                        <div class="col-sm-10">
+                          <p class="mb-0"><br>
+                                          <i class="fa-solid fa-angles-right"></i> สพป.พัทลุง เขต 2 กลุ่ม DLICT<br>
+                                          <i class="fa-solid fa-angles-right"></i> ตำแหน่ง เจ้าหน้าที่คอมพิวเตอร์<br>
+                                          <i class="fa-solid fa-angles-right"></i> หน้าที่ พัฒนาและดูแลระบบข้อมูลสารสนเทศ ให้บริการวิชาการทางด้านเทคโนโลยี
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="timeline right">
+              <div class="card">
+                <div class="card-body p-4">
+                  <div class="container">
+                      <div class="row">
+                        <div class="col-sm-2">
+                          <h5 class="text-center">2562 - 2567</h5>
+                          <img src="https://lh3.googleusercontent.com/d/1BFm50vtnYRnykfAzfNTwZvKS1ba2ReYa" 
+                              width="70px" height="70px"
+                              class="animate__animated animate__zoomIn mx-auto d-block" 
+                              alt="Hu">
+                        </div>
+                        <div class="col-sm-10">
+                          <p class="mb-0"><br>
+                                          <i class="fa-solid fa-angles-right"></i> โรงเรียนมุสลิมวิทยามูลนิธิ<br>
+                                          <i class="fa-solid fa-angles-right"></i> ตำแหน่ง ครู<br>
+                                          <i class="fa-solid fa-angles-right"></i> หน้าที่ ครูผู้สอนรายวิชา การออกแบบและเทคโนโลยี และวิทยาการคำนวณ ม.1 - 6
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="timeline left">
+              <div class="card">
+                <div class="card-body p-4">
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <h5 class="text-center">2558 - 2561</h5>
+                        <img src="https://lh3.googleusercontent.com/d/13cwWhlcMNtmivdk5_26mpgrU0GoC6Yxs" 
+                            width="70px" height="70px"
+                            class="animate__animated animate__zoomIn mx-auto d-block" 
+                            alt="Hu">
+                      </div>
+                      <div class="col-sm-10">
+                        <p class="mb-0"><br>
+                                        <i class="fa-solid fa-angles-right"></i> บริษัทแอดไวซ์โฮลดิงส์กรุ๊ป สาขากระบี่<br>
+                                        <i class="fa-solid fa-angles-right"></i> ตำแหน่ง พนักงาน,ผู้ช่วยและผู้จัดการสาขา<br>
+                                        <i class="fa-solid fa-angles-right"></i> หน้าที่ บริหารจัดการด้านธุรกิจ และด้านทรัพยากรบุคคล
+                        </p>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="timeline right">
+              <div class="card">
+                <div class="card-body p-4">
+                  <div class="row">
+                      <div class="col-sm-2">
+                        <h5 class="text-center">2554 - 2557</h5>
+                        <img src="https://lh3.googleusercontent.com/d/1Ro4ArQ82BdDhcLdElcO86AbNXvNm3ZJr" 
+                            width="70px" height="70px"
+                            class="animate__animated animate__zoomIn mx-auto d-block" 
+                            alt="Hu">
+                      </div>
+                      <div class="col-sm-10">
+                        <p class="mb-0"><br>
+                                        <i class="fa-solid fa-angles-right"></i> โรงเรียนนูรุลอิสลามหนองธงมูลนิธิ<br>
+                                        <i class="fa-solid fa-angles-right"></i> ตำแหน่ง ครู<br>
+                                        <i class="fa-solid fa-angles-right"></i> หน้าที่ ครูผู้สอนรายวิชา เทคโนโลยีสารสนเทศและการสื่อสาร ม.1 - 6
+                        </p>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </div>            
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="animate__animated animate__fadeIn mb-4">
+      <div class="card shadow-sm border-0 p-4">
+        <h5><i class="fa-solid fa-address-book"></i> ช่องทางการติดต่อ</h5>
+        <div class="row d-flex justify-content-center align-items-center">
+          <div class="col-sm-3 d-flex justify-content-center align-items-center">
+            <a href="https://www.facebook.com/sun.rise.367039" style="text-decoration: none; color: black;">
+              <img src="https://lh3.googleusercontent.com/d/1IlwdeefELez8rflegl8-nAl9gWV3YQUF" 
+                  class="me-1 mb-2"
+                  alt="Facebook" 
+                  style="width:20px;height:20px;">
+                  sunrise.wayuphak
+            </a>
+          </div>
+          <div class="col-sm-3 d-flex justify-content-center align-items-center">
+            <a href="https://www.instagram.com/sunrise.wayuphak/" style="text-decoration: none; color: black;">
+              <img src="https://lh3.googleusercontent.com/d/1OnmKhAh9r7G9DaIDWfGaWMExsZxSjuy3" 
+                  class="me-1 mb-2"
+                  alt="Instagram" 
+                  style="width:20px;height:20px;">
+                  sunrise.wayuphak
+          </div>
+          <div class="col-sm-3 d-flex justify-content-center align-items-center">
+            <a style="text-decoration: none; color: black;">
+              <img src="https://lh3.googleusercontent.com/d/1gwQNlrzuQ7HNoFXgPpXRpaCvVmTtGxYB" 
+                  class="me-1"
+                  alt="Line" 
+                  style="width:20px;height:20px;">
+                  wayupak1986
+            </a>
+          </div>
+          <div class="col-sm-3 d-flex justify-content-center align-items-center">
+            <a style="text-decoration: none; color: black;">
+              <img src="https://lh3.googleusercontent.com/d/1_ygQwUXP52E3Dra4sf_oumPHxjmm6BhR" 
+                  class="me-1"
+                  alt="Tel" 
+                  style="width:20px;height:20px;">
+                  0937651655
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

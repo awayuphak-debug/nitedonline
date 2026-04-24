@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  
+  <style>
+
+    body { 
+      font-family: 'Kanit', sans-serif; 
+      background-color: #f0f2f5; 
+      margin: 0;
+    }
+
+  </style>  
+  </head>
+  <body>
+    
+    <div class="animate__animated animate__fadeIn mb-4">
+      <div class="card shadow-sm border-0 p-4">
+        <h2><i class="bi bi-pc-display-horizontal"></i> ผลงานด้านเทคโนโลยี</h2>
+      </div>
+    </div>
+
+    <div class="animate__animated animate__fadeIn">
+      <div class="row">
+        <div class="col-sm-6 mb-4">
+          <div class="card shadow-sm border-0 p-4">
+            <a href="https://script.google.com/macros/s/AKfycbwTT6HnsBvG6orVoayPZknFMW7g3aw0LGsiE-krc8SRyGdyxazwoJR07Lr6CdkOfdOX/exec" style="text-decoration: none; color: black;">
+              <img src="https://lh3.googleusercontent.com/d/1Ghxv6DQbaPy9XSQdxG6T8xxzyXuwOB06" 
+                  class="me-1"
+                  alt="Digital Ecosystem Phatthalung2 " 
+                  style="width:100%; height:100%;">
+                  <h6 class="text-center mt-4"><i class="fa-brands fa-pushed"></i> Digital Ecosystem Phatthalung2</h6> 
+            </a>
+          </div>  
+        </div>
+        <div class="col-sm-6 mb-4"> 
+          <div class="card shadow-sm border-0 p-4">
+            <a href="https://learnfromtech.moodiy.app/?lang=th" style="text-decoration: none; color: black;">
+              <img src="https://lh3.googleusercontent.com/d/1zUTecEcqB3j4WBV_pynRx2G9kYXLl3BB" 
+                  class="me-1"
+                  alt="Tel" 
+                  style="width:100%; height:100%;">
+                  <h6 class="text-center mt-4"><i class="fa-brands fa-pushed"></i> PLG2 Learn Form Tech</h6> 
+            </a>
+          </div> 
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

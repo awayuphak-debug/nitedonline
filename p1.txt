@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+  <style>
+    :root {
+      --sidebar-width: 280px;
+      --primary-color: #0d6efd;
+      --dark-bg: #1a1d20;
+    }
+
+    body { 
+      font-family: 'Kanit', sans-serif; 
+      background-color: #f0f2f5; 
+      margin: 0;
+    }
+
+    /* --- Mobile Header (Hamburger Bar) --- */
+    .mobile-header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      height: 60px;
+      background: var(--dark-bg);
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+      z-index: 1001;
+      display: none; /* ซ่อนใน Desktop */
+    }
+
+    /* --- Sidebar Styling --- */
+    #sidebar {
+      width: var(--sidebar-width);
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: 0;
+      background: var(--dark-bg);
+      color: white;
+      transition: all 0.3s ease-in-out;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .profile-img-container {
+      padding: 40px 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .profile-img {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 4px solid var(--primary-color);
+      object-fit: cover;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    .nav-link {
+      color: #adb5bd;
+      padding: 15px 25px;
+      border-radius: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: 0.2s;
+    }
+
+    .nav-link i { font-size: 1.2rem; margin-right: 15px; }
+
+    .nav-link:hover {
+      color: white;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .nav-link.active {
+      color: white;
+      background: var(--primary-color);
+    }
+
+    /* --- Main Content Area --- */
+    #main-content {
+      margin-left: var(--sidebar-width);
+      padding: 40px;
+      min-height: 100vh;
+      transition: all 0.3s;
+    }
+
+    /* --- Overlay --- */
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+
+    /* --- Loading Spinner --- */
+    #loader { 
+      display: none; 
+      position: fixed; 
+      top: 50%; 
+      left: calc(50% + (var(--sidebar-width)/2)); 
+      transform: translate(-50%, -50%);
+      z-index: 2000;
+    }
+
+    /* --- Responsive Adjustments --- */
+    @media (max-width: 992px) {
+      .mobile-header { display: flex; }
+      
+      #sidebar {
+        left: calc(var(--sidebar-width) * -1); /* ซ่อน Sidebar */
+      }
+      
+      #sidebar.show {
+        left: 0; /* แสดง Sidebar */
+      }
+
+      #sidebar.show ~ #overlay {
+        display: block;
+      }
+
+      #main-content {
+        margin-left: 0;
+        padding: 80px 20px 40px 20px;
+      }
+
+      #loader {
+        left: 50%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="mobile-header d-lg-none shadow">
+    <button class="btn text-white" type="button" onclick="toggleSidebar()">
+      <i class="bi bi-list fs-2"></i>
+    </button>
+    <span class="ms-3 fw-bold fs-5">My Portfolio</span>
+  </div>
+
+  <div id="overlay" onclick="toggleSidebar()"></div>
+
+  <nav id="sidebar">
+    <div class="profile-img-container">
+      <img src="https://lh3.googleusercontent.com/d/1wSjS0WIjFs5OGiGBS8Q9TJ0i57lUMPi_" 
+          class="profile-img animate__animated animate__zoomIn" 
+          alt="Profile">
+
+      <h5 class="mb-0 fw-semibold">นายอรุณ วายุภักดิ์</h5>
+      <small class="text-primary">นักวิชาการคอมพิวเตอร์</small>
+    </div>
+
+    <div class="nav flex-column mt-2">
+      <a class="nav-link active" onclick="loadPage('Profile', this)">
+        <i class="bi bi-person-vcard"></i> โปรไฟล์
+      </a>
+      <a class="nav-link" onclick="loadPage('Skills', this)">
+        <i class="bi bi-star-fill"></i> ทักษะความสามารถ
+      </a>
+      <a class="nav-link" onclick="loadPage('Performance', this)">
+        <i class="bi bi-pc-display-horizontal"></i> ผลงานด้านเทคโนโลยี
+      </a>
+      <a class="nav-link" href="https://drive.google.com/file/d/1WQIMO1AFITp3aAUFpLWF48AfTVjl47Gr/view?usp=sharing" target="_blank">
+        <i class="bi bi-file-earmark-pdf"></i> ดาวน์โหลด Resume
+      </a>      
+    </div>
+  </nav>
+
+  <div id="loader">
+    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+  </div>
+
+  <main id="main-content">
+    <div id="display-area" class="animate__animated animate__fadeIn">
+      </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // ฟังก์ชันเปิด-ปิด Sidebar สำหรับมือถือ
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('show');
+    }
+
+    // ฟังก์ชันโหลดหน้าเว็บ (SPA)
+    function loadPage(filename, element) {
+      // 1. ปิด Sidebar ทันที (กรณีมือถือ)
+      document.getElementById('sidebar').classList.remove('show');
+
+      // 2. แสดงสถานะกำลังโหลด
+      const area = document.getElementById('display-area');
+      const loader = document.getElementById('loader');
+      
+      area.style.opacity = '0.2';
+      loader.style.display = 'block';
+
+      // 3. ปรับสถานะปุ่มเมนู (Active State)
+      if(element) {
+        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+        element.classList.add('active');
+      }
+
+      // 4. เรียกใช้ Google Apps Script เพื่อดึงไฟล์ HTML
+      google.script.run
+        .withSuccessHandler(function(htmlContent) {
+          area.innerHTML = htmlContent;
+          area.style.opacity = '1';
+          loader.style.display = 'none';
+          
+          // เลื่อนขึ้นด้านบนสุดทุกครั้งที่เปลี่ยนหน้า
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        })
+        .withFailureHandler(function(err) {
+          area.innerHTML = '<div class="alert alert-danger">เกิดข้อผิดพลาดในการโหลดข้อมูล: ' + err + '</div>';
+          loader.style.display = 'none';
+          area.style.opacity = '1';
+        })
+        .loadPartialView(filename);
+    }
+
+    // เมื่อเปิดหน้าเว็บครั้งแรก ให้โหลดหน้า Profile ทันที
+    window.onload = () => {
+      loadPage('Profile', document.querySelector('.nav-link.active'));
+    };
+  </script>
+</body>
+</html>
+
+<div class="ratio" style="--bs-aspect-ratio: 300%;">
+  <iframe 
+    src="https://script.google.com/macros/s/AKfycbyogAyq8JGFXzUipOLIVVXxXfzPacZ8RXlTin_ZhlSUcbLEohUbhv4Od1jpoS7UrX2Y/exec" title="Profile">
+  </iframe>
+</div>

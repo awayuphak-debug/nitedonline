@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+    :root {
+      --sidebar-width: 280px;
+      --primary-color: #0d6efd;
+      --dark-bg: #1a1d20;
+    }
+
+    body { 
+      font-family: 'Kanit', sans-serif; 
+      background-color: #f0f2f5; 
+      margin: 0;
+    }
+    </style>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+
+    <div class="animate__animated animate__fadeIn">
+      <div class="animate__animated animate__fadeIn mb-4">
+        <div class="card shadow-sm border-0 p-4">
+          <h2><i class="bi bi-star-fill"></i> ทักษะความสามารถ</h2>
+        </div>
+      </div>
+      
+      <div class="card border-0 shadow-sm p-4">
+        <div class="row align-items-center">
+          <div class="col-lg-7 mb-4 mb-lg-0">
+            <div style="position: relative; height: 350px; width: 100%;">
+              <canvas id="skillsRadarChart"></canvas>
+            </div>
+          </div>
+          
+          <div class="col-lg-5">
+            <div class="ps-lg-4">
+              <h5 class="mb-3 border-bottom pb-2">รายละเอียดทักษะความสามารถ</h5>
+              <div class="mb-3">
+                <small class="d-block mb-1">พัฒนาเว็บแอปพลิเคชัน HTML, Javascript, PHP ฐานข้อมูล MySQL, Google Sheet</small>
+                <div class="progress" style="height: 10px;">
+                  <div class="progress-bar bg-primary" style="width: 100%"></div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <small class="d-block mb-1">พัฒนาไมโครคอนโทรลเลอร์ C, Micropython</small>
+                <div class="progress" style="height: 10px;">
+                  <div class="progress-bar bg-primary" style="width: 95%"></div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <small class="d-block mb-1">ซ่อมบำรุงไมโครคอมพิวเตอร์ และจัดการระบบเครือข่าย</small>
+                <div class="progress" style="height: 10px;">
+                  <div class="progress-bar bg-primary" style="width: 100%"></div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <small class="d-block mb-1">กราฟิกดีไซน์ 3DsMax, Photoshop, Illustrator, Canva, Capcut </small>
+                <div class="progress" style="height: 10px;">
+                  <div class="progress-bar bg-primary" style="width: 100%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /**
+       * ฟังก์ชันสำหรับวาดกราฟ
+       */
+      function renderSkillsChart() {
+        const canvas = document.getElementById('skillsRadarChart');
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+        
+        // ตรวจสอบว่ามีกราฟเก่าอยู่หรือไม่ (ป้องกันกราฟซ้อนกันเวลาเปลี่ยนหน้า)
+        if (window.myRadarChart) {
+          window.myRadarChart.destroy();
+        }
+
+        window.myRadarChart = new Chart(ctx, {
+          type: 'radar',
+          data: {
+            labels: [
+              ['พัฒนา', 'เว็บแอปพลิเคชัน'], 
+              ['พัฒนา', 'ไมโครคอนโทรลเลอร์'], 
+              ['ซ่อมบำรุงไมโครคอมฯ', 'จัดการระบบเครือข่าย'], 
+              ['กราฟิก', 'ดีไซน์']
+            ],
+            datasets: [{
+              label: 'ระดับความสามารถ (%)',
+              data: [100, 95, 100, 100],
+              fill: true,
+              backgroundColor: 'rgba(13, 110, 253, 0.2)',
+              borderColor: 'rgb(13, 110, 253)',
+              pointBackgroundColor: 'rgb(13, 110, 253)',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: 'rgb(13, 110, 253)',
+              borderWidth: 3
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              r: {
+                angleLines: { display: true, color: 'rgba(0,0,0,0.1)' },
+                suggestedMin: 0,
+                suggestedMax: 100,
+                ticks: { stepSize: 20, display: false },
+                pointLabels: {
+                  font: {
+                    family: 'Kanit',
+                    size: 12
+                  },
+                  color: '#495057'
+                }
+              }
+            },
+            plugins: {
+              legend: { display: false }
+            }
+          }
+        });
+      }
+
+      // แก้ไขปัญหาเรื่องการโหลดใน SPA: 
+      // ตรวจสอบว่า Chart.js พร้อมใช้งานหรือยัง ถ้าพร้อมแล้วให้วาดทันที
+      if (typeof Chart !== 'undefined') {
+        renderSkillsChart();
+      } else {
+        // ถ้ายังไม่พร้อม ให้รอโหลด 0.5 วินาทีแล้วลองใหม่ (Safety Timeout)
+        setTimeout(renderSkillsChart, 500);
+      }
+    </script>
+    
+  </body>
+</html>
