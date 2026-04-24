@@ -1,0 +1,118 @@
+function doGet() {
+  return HtmlService.createTemplateFromFile('Index')
+      .evaluate()
+      .setFaviconUrl('https://s13.gifyu.com/images/bqZPy.png')
+      .setTitle('Search Dashboard PLG2')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// ฟังก์ชันสำหรับดึงเนื้อหาจากไฟล์ HTML อื่นๆ ตามชื่อไฟล์
+function loadPartialView(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
+function getRawData() {
+  const ssId = '1rZd4MdvfLHam5tH2r9BWSy8BGsydc9uWoamsmw4DJ_I';
+  const sheet = SpreadsheetApp.openById(ssId).getSheets()[0];
+  const data = sheet.getDataRange().getValues();
+  
+  // ตัดหัวตารางออก และส่งข้อมูลไปทั้งหมด
+  return data.slice(1); 
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+  <style>
+    body { font-family: 'Kanit', sans-serif; background-color: #f8f9fa; padding: 20px; }
+    .table-container { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .dataTables_filter { margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="text-center">
+    <div class="animate__animated animate__fadeIn mb-4">
+      <div class="card shadow-sm border-0 p-4">
+        <h2><i class="fa-brands fa-searchengin"></i> สืบค้นฐานข้อมูล</h2>
+      </div>
+    </div>
+  </div>
+  <div class="table-container">
+
+    <table id="schoolTable" class="table table-striped table-hover" style="width:100%">
+      <thead>
+        <tr>
+          <th>ที่</th>
+          <th>รหัสโรงเรียน</th>
+          <th>โรงเรียน</th>
+          <th>จำนวนนักเรียน</th>
+          <th>อำเภอ</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody">
+        </tbody>
+    </table>
+  </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+  $(document).ready(function() {
+    // เรียกข้อมูลจาก Server
+    google.script.run.withSuccessHandler(showTable).getRawData();
+  });
+
+  function showTable(data) {
+    const tableBody = document.getElementById('tableBody');
+    
+    // 1. สร้าง HTML สำหรับแถวข้อมูล
+    let html = '';
+    data.forEach(row => {
+      html += `<tr>
+        <td>${row[0]}</td>
+        <td>${row[1]}</td>
+        <td>${row[2]}</td>
+        <td>${row[3]}</td>
+        <td>${row[4]}</td>
+      </tr>`;
+    });
+    tableBody.innerHTML = html;
+
+    // 2. สั่งให้ DataTables ทำงาน
+    $('#schoolTable').DataTable({
+      "language": {
+        "search": "ค้นหาโรงเรียนหรืออำเภอ:",
+        "lengthMenu": "แสดง _MENU_ รายการ",
+        "info": "แสดงรายการที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+        "paginate": {
+          "first": "หน้าแรก",
+          "last": "หน้าสุดท้าย",
+          "next": "ถัดไป",
+          "previous": "ก่อนหน้า"
+        }
+      },
+      "pageLength": 10, // แสดงหน้าละ 10 รายการ
+      "order": [[0, "asc"]] // เรียงตามคอลัมน์ "ที่" จากน้อยไปมาก
+    });
+  }
+</script>
+
+</body>
+</html>

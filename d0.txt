@@ -1,0 +1,23 @@
+function doGet() {
+  return HtmlService.createTemplateFromFile('Index')
+      .evaluate()
+      .setFaviconUrl('https://s13.gifyu.com/images/bqZPy.png')
+      .setTitle('Student Dashboard PLG2')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// ฟังก์ชันสำหรับดึงเนื้อหาจากไฟล์ HTML อื่นๆ ตามชื่อไฟล์
+function loadPartialView(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
+// ฟังก์ชันสำหรับดึงข้อมูลเพื่อการค้นหา
+function getRawData() {
+  const ssId = '1rZd4MdvfLHam5tH2r9BWSy8BGsydc9uWoamsmw4DJ_I';
+  const sheet = SpreadsheetApp.openById(ssId).getSheets()[0];
+  const data = sheet.getDataRange().getValues();
+  
+  // ตัดหัวตารางออก และส่งข้อมูลไปทั้งหมด
+  return data.slice(1); 
+}

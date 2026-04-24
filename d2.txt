@@ -1,0 +1,210 @@
+function doGet() {
+  return HtmlService.createTemplateFromFile('Index')
+      .evaluate()
+      .setFaviconUrl('https://s13.gifyu.com/images/bqZPy.png')
+      .setTitle('Graph Dashboard PLG2')
+      .addMetaTag('viewport', 'width=device-width, initial-scale=1')
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+// ฟังก์ชันสำหรับดึงเนื้อหาจากไฟล์ HTML อื่นๆ ตามชื่อไฟล์
+function loadPartialView(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
+// ฟังก์ชันสำหรับดึงข้อมูลมาสร้างกราฟ
+function getSummaryData() {
+  const ssId = '1rZd4MdvfLHam5tH2r9BWSy8BGsydc9uWoamsmw4DJ_I'; // ID ของ Google Sheet
+  const sheet = SpreadsheetApp.openById(ssId).getSheets()[0];
+  const data = sheet.getDataRange().getValues();
+  
+  // ข้อมูลจาก Sheet1 ประกอบด้วย: ที่, รหัสโรงเรียน, โรงเรียน, จำนวนนักเรียน, อำเภอ 
+  const districtMap = {};
+  
+  // เริ่มวนลูปที่แถวที่ 1 (ข้ามหัวตาราง)
+  for (let i = 1; i < data.length; i++) {
+    const studentCount = parseInt(data[i][3]); // คอลัมน์ "จำนวนนักเรียน"
+    const district = data[i][4];               // คอลัมน์ "อำเภอ"
+    
+    if (district) {
+      districtMap[district] = (districtMap[district] || 0) + studentCount;
+    }
+  }
+  
+  // แปลง Object เป็น Array สำหรับใช้งานในกราฟ
+  const labels = Object.keys(districtMap);
+  const values = Object.values(districtMap);
+  
+  return { labels: labels, values: values };
+}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body { font-family: sans-serif; padding: 20px; background-color: #f4f7f6; }
+      /* .container { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; } */
+      .chart-box { 
+        background: white; 
+        padding: 30px; /* เพิ่มพื้นที่ว่างรอบๆ กราฟ */
+        border-radius: 12px; 
+        box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+        height: 400px; /* ลดความสูงลงมาเล็กน้อยให้พอดีตา */
+        position: relative; 
+        margin-bottom: 20px;
+      }
+      canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <div class="text-center">
+        <div class="animate__animated animate__fadeIn mb-4">
+          <div class="card shadow-sm border-0 p-4">
+            <h2><i class="fa-solid fa-tachograph-digital"></i> Dashboard ข้อมูลนักเรียน สพป.พัทลุง เขต 2</h2>
+          </div>
+        </div>
+      </div>  
+
+      <div class="row">
+        <div class="col-sm-6"> 
+          <div class="chart-box">
+            <canvas id="barChart"></canvas>
+          </div>
+        </div> 
+        <div class="col-sm-6"> 
+          <div class="chart-box">
+            <canvas id="pieChart"></canvas>
+          </div>
+        </div>   
+      </div>
+    </div>  
+
+    <script>
+      // ดึงข้อมูลจากฝั่ง Server เมื่อโหลดหน้าเว็บ
+      window.onload = function() {
+        google.script.run.withSuccessHandler(drawCharts).getSummaryData();
+      };
+
+      function drawCharts(data) {
+        const ctxBar = document.getElementById('barChart').getContext('2d');
+        const ctxPie = document.getElementById('pieChart').getContext('2d');
+        
+        const colors = [
+          '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'
+        ];
+
+        // 1. สร้างกราฟแท่ง (Bar Chart)
+        // ตรวจสอบความกว้างหน้าจอ
+        const isMobile = window.innerWidth < 600;
+
+        new Chart(ctxBar, {
+          type: 'bar',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: 'จำนวนนักเรียน',
+              data: data.values,
+              backgroundColor: 'rgba(54, 162, 235, 0.8)',
+              borderRadius: 5 // เพิ่มความโค้งมนให้แท่งกราฟดูทันสมัย
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: true, 
+            // ปรับ Aspect Ratio: ถ้ามือถือใช้ 0.8 (ทรงสูง) ถ้าคอมใช้ 1.5 (ทรงกว้าง)
+            aspectRatio: isMobile ? 0.8 : 1.5, 
+            plugins: {
+              legend: { display: false },
+              title: {
+                display: true,
+                text: 'จำนวนนักเรียนแยกตามอำเภอ',
+                font: { size: isMobile ? 14 : 18 } // ปรับขนาดตัวอักษรหัวข้อ
+              }
+            },
+            scales: {
+              x: {
+                ticks: {
+                  // ปรับตัวอักษรแกน X
+                  maxRotation: 45, // เอียงสูงสุด 45 องศา
+                  minRotation: 45, 
+                  font: {
+                    size: isMobile ? 10 : 12 // ลดขนาดตัวอักษรในมือถือ
+                  }
+                },
+                grid: { display: false }
+              },
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  font: { size: isMobile ? 10 : 12 }
+                }
+              }
+            }
+          }
+        });
+
+        // 2. สร้างกราฟวงกลม (Pie Chart)
+        const pieOptions = {
+          responsive: true,
+          maintainAspectRatio: false,
+          layout: {
+            padding: {
+              top: 10,
+              bottom: 30, // เพิ่มพื้นที่ด้านล่างเพื่อให้วงกลมเล็กลงและดูสมดุล
+              left: 10,
+              right: 10
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top', // หรือ 'bottom' ตามความชอบ
+              labels: {
+                usePointStyle: true, // เปลี่ยนสัญลักษณ์เป็นจุดวงกลมจะช่วยประหยัดพื้นที่
+                padding: 20
+              }
+            },
+            title: {
+              display: true,
+              text: 'สัดส่วนนักเรียนแยกตามอำเภอ',
+              font: {
+                size: 22, // <<< ปรับขนาดอักษรที่นี่ (หน่วยเป็น pixel)
+                weight: 'bold' // สามารถปรับความหนาได้ด้วย
+              },
+              padding: { bottom: 20 }
+            }
+          }
+        };
+
+        // ตอนสร้างกราฟวงกลม
+        new Chart(ctxPie, {
+          type: 'pie',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              data: data.values,
+              backgroundColor: colors,
+              borderWidth: 2,
+              hoverOffset: 20 // เพิ่มลูกเล่นเวลาเอาเมาส์ไปชี้
+            }]
+          },
+          options: pieOptions
+        });
+      }
+    </script>
+  </body>
+</html>
